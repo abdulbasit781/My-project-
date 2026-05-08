@@ -1,0 +1,23 @@
+def calculate_pakistani_change(amount):
+    # Denominations in descending order for Greedy approach
+    denominations = [5000, 1000, 500, 100, 50, 20, 10, 5, 2, 1]
+    change_breakdown = {}
+    
+    temp_amount = amount
+    for coin in denominations:
+        if temp_amount >= coin:
+            count = temp_amount // coin
+            temp_amount %= coin
+            change_breakdown[coin] = count
+            
+    return change_breakdown
+
+# Execution for Rs. 1988
+total_rs = 1988
+result = calculate_pakistani_change(total_rs)
+
+print(f"Total Amount: Rs. {total_rs}")
+print("-" * 25)
+for note, count in result.items():
+    label = "Notes" if note >= 10 else "Coins"
+    print(f"Rs. {note:4} {label:5} : {count}")
