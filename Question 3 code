@@ -1,0 +1,32 @@
+def topological_sort(graph):
+    visited = set()
+    stack = []
+
+    def dfs(node):
+        visited.add(node)
+        # Visit all neighbors of the current node
+        for neighbor in graph.get(node, []):
+            if neighbor not in visited:
+                dfs(neighbor)
+        # Push to stack after all descendants are visited
+        stack.append(node)
+
+    # Handle disconnected components
+    for vertex in list(graph.keys()):
+        if vertex not in visited:
+            dfs(vertex)
+    
+    # The topological order is the stack reversed
+    return stack[::-1]
+
+# Example Graph Structure (Task Dependencies)
+# A -> B, A -> C, B -> D, C -> D
+graph_data = {
+    'A': ['B', 'C'],
+    'B': ['D'],
+    'C': ['D'],
+    'D': []
+}
+
+order = topological_sort(graph_data)
+print(f"Topological Sort Order: {' -> '.join(order)}")
