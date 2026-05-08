@@ -1,0 +1,20 @@
+import pprint
+
+# Define 4 vertices
+vertices = [0, 1, 2, 3]
+
+# 1. Adjacency Matrix Implementation
+# A 4x4 matrix where matrix[i][j] = 1 indicates an edge exists.
+adj_matrix = [[0 if i == j else 1 for j in range(4)] for i in range(4)]
+
+# 2. Adjacency List Implementation
+# Using a dictionary where each key is a vertex and its value is a list of neighbors.
+adj_list = {v: [u for u in vertices if u != v] for v in vertices}
+
+print("--- Adjacency Matrix (4x4) ---")
+for row in adj_matrix:
+    print(row)
+
+print("\n--- Adjacency List ---")
+for vertex, neighbors in adj_list.items():
+    print(f"Vertex {vertex}: {neighbors}")
