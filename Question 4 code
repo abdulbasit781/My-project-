@@ -1,38 +1,78 @@
-def solve_lcs(s1, s2):
-    m, n = len(s1), len(s2)
-    # Initialize a (m+1) x (n+1) table with zeros
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+```java id="lcs7ja"
+import java.util.*;
 
-    # Fill the table
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if s1[i-1] == s2[j-1]:
-                dp[i][j] = 1 + dp[i-1][j-1]
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+public class LongestCommonSubsequence {
 
-    # Backtrack to find the actual string
-    lcs_sequence = []
-    i, j = m, n
-    while i > 0 and j > 0:
-        if s1[i-1] == s2[j-1]:
-            lcs_sequence.append(s1[i-1])
-            i -= 1
-            j -= 1
-        elif dp[i-1][j] > dp[i][j-1]:
-            i -= 1
-        else:
-            j -= 1
-            
-    return dp[m][n], "".join(reversed(lcs_sequence))
+    // Function to solve LCS
+    public static String[] solveLCS(String s1, String s2) {
 
-# Input Data
-name_string = "GEMINI"  # Replace with your actual name
-reference_string = "ETAOINSHR"
+        int m = s1.length();
+        int n = s2.length();
 
-length, sequence = solve_lcs(name_string.upper(), reference_string)
+        // Initialize DP table
+        int[][] dp = new int[m + 1][n + 1];
 
-print(f"String 1 (Name): {name_string}")
-print(f"String 2 (Ref):  {reference_string}")
-print(f"LCS Length:      {length}")
-print(f"LCS Found:       '{sequence}'")
+        // Fill the table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // Backtrack to find LCS string
+        StringBuilder lcsSequence = new StringBuilder();
+
+        int i = m;
+        int j = n;
+
+        while (i > 0 && j > 0) {
+
+            if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                lcsSequence.append(s1.charAt(i - 1));
+                i--;
+                j--;
+
+            } else if (dp[i - 1][j] > dp[i][j - 1]) {
+                i--;
+
+            } else {
+                j--;
+            }
+        }
+
+        // Reverse because backtracking gives reverse order
+        lcsSequence.reverse();
+
+        return new String[]{
+                String.valueOf(dp[m][n]),
+                lcsSequence.toString()
+        };
+    }
+
+    public static void main(String[] args) {
+
+        // Input Data
+        String nameString = "GEMINI";
+        String referenceString = "ETAOINSHR";
+
+        String[] result = solveLCS(
+                nameString.toUpperCase(),
+                referenceString
+        );
+
+        String length = result[0];
+        String sequence = result[1];
+
+        System.out.println("String 1 (Name): " + nameString);
+        System.out.println("String 2 (Ref):  " + referenceString);
+        System.out.println("LCS Length:      " + length);
+        System.out.println("LCS Found:       '" + sequence + "'");
+    }
+}
+```
+
