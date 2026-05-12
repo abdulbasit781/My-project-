@@ -1,20 +1,56 @@
-import pprint
+```java
+import java.util.*;
 
-# Define 4 vertices
-vertices = [0, 1, 2, 3]
+public class GraphRepresentation {
+    public static void main(String[] args) {
 
-# 1. Adjacency Matrix Implementation
-# A 4x4 matrix where matrix[i][j] = 1 indicates an edge exists.
-adj_matrix = [[0 if i == j else 1 for j in range(4)] for i in range(4)]
+        // Define 4 vertices
+        int[] vertices = {0, 1, 2, 3};
 
-# 2. Adjacency List Implementation
-# Using a dictionary where each key is a vertex and its value is a list of neighbors.
-adj_list = {v: [u for u in vertices if u != v] for v in vertices}
+        // 1. Adjacency Matrix Implementation
+        // A 4x4 matrix where matrix[i][j] = 1 indicates an edge exists.
+        int[][] adjMatrix = new int[4][4];
 
-print("--- Adjacency Matrix (4x4) ---")
-for row in adj_matrix:
-    print(row)
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i != j) {
+                    adjMatrix[i][j] = 1;
+                } else {
+                    adjMatrix[i][j] = 0;
+                }
+            }
+        }
 
-print("\n--- Adjacency List ---")
-for vertex, neighbors in adj_list.items():
-    print(f"Vertex {vertex}: {neighbors}")
+        // 2. Adjacency List Implementation
+        // Using a HashMap where each key is a vertex and its value is a list of neighbors.
+        HashMap<Integer, ArrayList<Integer>> adjList = new HashMap<>();
+
+        for (int v : vertices) {
+            ArrayList<Integer> neighbors = new ArrayList<>();
+
+            for (int u : vertices) {
+                if (u != v) {
+                    neighbors.add(u);
+                }
+            }
+
+            adjList.put(v, neighbors);
+        }
+
+        // Print Adjacency Matrix
+        System.out.println("--- Adjacency Matrix (4x4) ---");
+
+        for (int[] row : adjMatrix) {
+            System.out.println(Arrays.toString(row));
+        }
+
+        // Print Adjacency List
+        System.out.println("\n--- Adjacency List ---");
+
+        for (Map.Entry<Integer, ArrayList<Integer>> entry : adjList.entrySet()) {
+            System.out.println("Vertex " + entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}
+```
+
