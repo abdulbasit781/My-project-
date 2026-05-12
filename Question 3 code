@@ -1,32 +1,67 @@
-def topological_sort(graph):
-    visited = set()
-    stack = []
+```java id="x8k2pq"
+import java.util.*;
 
-    def dfs(node):
-        visited.add(node)
-        # Visit all neighbors of the current node
-        for neighbor in graph.get(node, []):
-            if neighbor not in visited:
-                dfs(neighbor)
-        # Push to stack after all descendants are visited
-        stack.append(node)
+public class TopologicalSort {
 
-    # Handle disconnected components
-    for vertex in list(graph.keys()):
-        if vertex not in visited:
-            dfs(vertex)
-    
-    # The topological order is the stack reversed
-    return stack[::-1]
+    // Function for Topological Sort
+    public static List<String> topologicalSort(Map<String, List<String>> graph) {
 
-# Example Graph Structure (Task Dependencies)
-# A -> B, A -> C, B -> D, C -> D
-graph_data = {
-    'A': ['B', 'C'],
-    'B': ['D'],
-    'C': ['D'],
-    'D': []
+        Set<String> visited = new HashSet<>();
+        Stack<String> stack = new Stack<>();
+
+        // DFS function
+        for (String vertex : graph.keySet()) {
+            if (!visited.contains(vertex)) {
+                dfs(vertex, graph, visited, stack);
+            }
+        }
+
+        // Reverse stack to get topological order
+        List<String> result = new ArrayList<>();
+
+        while (!stack.isEmpty()) {
+            result.add(stack.pop());
+        }
+
+        return result;
+    }
+
+    // DFS Helper Method
+    public static void dfs(String node,
+                           Map<String, List<String>> graph,
+                           Set<String> visited,
+                           Stack<String> stack) {
+
+        visited.add(node);
+
+        // Visit all neighbors
+        for (String neighbor : graph.get(node)) {
+            if (!visited.contains(neighbor)) {
+                dfs(neighbor, graph, visited, stack);
+            }
+        }
+
+        // Push after visiting descendants
+        stack.push(node);
+    }
+
+    public static void main(String[] args) {
+
+        // Example Graph Structure
+        // A -> B, A -> C, B -> D, C -> D
+
+        Map<String, List<String>> graphData = new HashMap<>();
+
+        graphData.put("A", Arrays.asList("B", "C"));
+        graphData.put("B", Arrays.asList("D"));
+        graphData.put("C", Arrays.asList("D"));
+        graphData.put("D", new ArrayList<>());
+
+        List<String> order = topologicalSort(graphData);
+
+        System.out.println("Topological Sort Order: " +
+                String.join(" -> ", order));
+    }
 }
+```
 
-order = topological_sort(graph_data)
-print(f"Topological Sort Order: {' -> '.join(order)}")
